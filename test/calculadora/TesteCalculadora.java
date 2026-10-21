@@ -8,30 +8,49 @@ public class TesteCalculadora {
     public static void main(String[] args) {
         Calculadora calc = new Calculadora();
 
-        // Testes: entradas, resultado esperado e resultado obtido
-        testar(calc, "Soma",                 2,  3, "+", 5);
-        testar(calc, "Subtracao",           10,  4, "-", 6);
-        testar(calc, "Multiplicacao",        3,  5, "*", 15);
-        testar(calc, "Divisao",              8,  2, "/", 4);
-        testar(calc, "Divisao por zero",     8,  0, "/", 0);   // divisao por zero
-        testar(calc, "Operacao invalida",    5,  5, "x", 0);   // operacao invalida
+        testarOperacao(calc, "Soma",          2,  3, "+", 5);
+        testarOperacao(calc, "Subtracao",    10,  4, "-", 6);
+        testarOperacao(calc, "Multiplicacao", 3,  5, "*", 15);
+        testarOperacao(calc, "Divisao",       8,  2, "/", 4);
 
-        System.out.println();
+        testarErro(calc, "Divisao por zero",  8, 0, "/");   // excecao
+        testarErro(calc, "Operacao invalida", 5, 5, "x");   // excecao
+        testarErro(calc, "Operador nulo",     5, 5, null);  // excecao
+
         System.out.println("Total: " + total + " | Passaram: " + (total - falhas) + " | Falharam: " + falhas);
     }
 
-    private static void testar(Calculadora calc, String nome, int a, int b, String op, int esperado) {
-        System.out.println("--- " + nome + " ---");
-        System.out.println("Entradas: a=" + a + ", b=" + b + ", op=\"" + op + "\"");
-        int obtido = calc.calc(a, b, op);
+    private static void testarOperacao(Calculadora calc, String nome, int a, int b, String operador, int esperado) {
+        cabecalho(nome, a, b, operador);
+        int obtido = calc.calcular(a, b, operador);
         System.out.println("Esperado: " + esperado + " | Obtido: " + obtido);
+        registrar(obtido == esperado);
+    }
+
+    private static void testarErro(Calculadora calc, String nome, int a, int b, String operador) {
+        cabecalho(nome, a, b, operador);
+        System.out.println("Esperado: IllegalArgumentException");
+        try {
+            int obtido = calc.calcular(a, b, operador);
+            System.out.println("Obtido: " + obtido + " (nenhuma excecao)");
+            registrar(false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Obtido: IllegalArgumentException -> " + e.getMessage());
+            registrar(true);
+        }
+    }
+
+    private static void cabecalho(String nome, int a, int b, String operador) {
+        System.out.println("--- " + nome + " ---");
+        System.out.println("Entradas: a=" + a + ", b=" + b + ", operador=" + (operador == null ? "null" : "\"" + operador + "\""));
+    }
+
+    private static void registrar(boolean passou) {
         total++;
-        if (obtido == esperado) {
-            System.out.println("Status: PASSOU");
-        } else {
-            System.out.println("Status: FALHOU");
+        if (!passou) {
             falhas++;
         }
+        System.out.println("Status: " + (passou ? "PASSOU" : "FALHOU"));
         System.out.println();
     }
 }
