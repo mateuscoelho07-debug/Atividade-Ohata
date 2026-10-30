@@ -149,24 +149,22 @@ projeto_calculadora/
 
 # 9. Explicação das Operações
 
-Esta é a **versão inicial** do projeto (branch `main`). A versão refatorada e documentada está na branch `Refatoracao`.
-
 A classe `Calculadora` (pacote `calculadora`) possui o método principal:
 
 ```java
-public int calc(int a, int b, String op)
+public int calcular(int a, int b, String operador)
 ```
 
-Ele recebe dois números inteiros e um operador e retorna o resultado como `int`. O resultado fica guardado no atributo `r`.
+Ele recebe dois números inteiros e um operador e retorna o resultado como `int`. O último resultado fica guardado no atributo `resultado`.
 
 | Operador | Operação | Exemplo | Resultado |
 |---|---|---|---|
-| `+` | Soma | `calc(2, 3, "+")` | 5 |
-| `-` | Subtração | `calc(10, 4, "-")` | 6 |
-| `*` | Multiplicação | `calc(3, 5, "*")` | 15 |
-| `/` | Divisão | `calc(8, 2, "/")` | 4 |
+| `+` | Soma | `calcular(2, 3, "+")` | 5 |
+| `-` | Subtração | `calcular(10, 4, "-")` | 6 |
+| `*` | Multiplicação | `calcular(3, 5, "*")` | 15 |
+| `/` | Divisão | `calcular(8, 2, "/")` | 4 |
 
-Tratamento de erros: divisão por zero e operador inválido mostram uma mensagem no console e retornam 0, sem derrubar o programa.
+Tratamento de erros: divisão por zero, operador inválido e operador nulo lançam `IllegalArgumentException` com mensagem informativa, sem derrubar o programa.
 
 ---
 
@@ -179,16 +177,43 @@ javac -encoding UTF-8 -d out src/calculadora/*.java test/calculadora/*.java
 java -cp out calculadora.TesteCalculadora
 ```
 
+**Versão inicial**
+
 ![Teste da versão inicial](images/testes/teste_inicial.png)
 
----
+**Após a refatoração (branch Refatoracao)**
 
-# 11. Refatoração e Documentação
-
-A refatoração, os testes atualizados, o JavaDoc e a documentação HTML (`docs/index.html`) estão na branch `Refatoracao`.
+![Teste após a refatoração](images/refatoracao/teste_refatorado.png)
 
 ---
 
-# 12. Link do Repositório
+# 11. Refatoração
+
+Realizada na branch `Refatoracao`, mantendo o funcionamento e executando os testes novamente.
+
+- extração de métodos: `somar`, `subtrair`, `multiplicar`, `dividir` e `validarOperador`;
+- simplificação das condicionais: `if / else if` trocado por `switch`;
+- melhoria de nomes: `calc` → `calcular`, `r` → `resultado`, `op` → `operador`;
+- erros tratados com `IllegalArgumentException`.
+
+---
+
+# 12. Documentação JavaDoc
+
+Classes, métodos, atributos, parâmetros, retornos e exceções foram documentados. A documentação HTML está em `docs/index.html`.
+
+```bash
+javadoc -private -author -version -encoding UTF-8 -docencoding UTF-8 -charset UTF-8 -d docs -sourcepath src:test -subpackages calculadora
+```
+
+![JavaDoc - página inicial](images/javadoc/javadoc_index.png)
+
+![JavaDoc - classe Calculadora](images/javadoc/javadoc_calculadora.png)
+
+![JavaDoc - classe TesteCalculadora](images/javadoc/javadoc_teste_calculadora.png)
+
+---
+
+# 13. Link do Repositório
 
 https://github.com/mateuscoelho07-debug/Atividade-Ohata
